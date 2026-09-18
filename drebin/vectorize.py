@@ -1,4 +1,4 @@
-"""Vectorizes extracted features into sparse binary matrices (Arp et al., Section II-B, $\phi(x)$ mapping).
+r"""Vectorizes extracted features into sparse binary matrices (Arp et al., Section II-B, $\phi(x)$ mapping).
 
 Explicitly separates fit and transform operations to prevent data leakage during pipeline 
 evaluation. The feature space must be derived exclusively from the training split. When 
@@ -38,7 +38,7 @@ def fit(records: list[dict]) -> dict[str, int]:
 
 
 def transform(records: list[dict], vocabulary: dict[str, int]) -> sparse.csr_matrix:
-    """Transform extraction records into a sparse binary matrix $\phi(x)$.
+    r"""Transform extraction records into a sparse binary matrix $\phi(x)$.
 
     Constructs CSR arrays (indices, indptr) manually for memory efficiency, avoiding 
     dense allocations over high-dimensional feature spaces ($|S| > 10^5$). Features 
@@ -47,12 +47,10 @@ def transform(records: list[dict], vocabulary: dict[str, int]) -> sparse.csr_mat
     indptr = [0]
     indices = []
     for r in records:
-        # Enforce binary representation φ(x) ∈ {0, 1}^|S| via set reduction
         columns = {vocabulary[f] for f in r.get("features", []) if f in vocabulary}
         indices.extend(sorted(columns))
         indptr.append(len(indices))
 
-    # Binary indicators stored as int8 to minimize memory footprint
     data = np.ones(len(indices), dtype=np.int8)
     return sparse.csr_matrix(
         (data, np.array(indices, dtype=np.int32), np.array(indptr, dtype=np.int32)),
@@ -65,7 +63,7 @@ def sample_index(records: list[dict]) -> list[dict]:
 
     Decouples raw matrix data from sample identity. Ground truth labels default 
     to None and are populated downstream without re-indexing the matrix.
-    """
+    """ 
     return [
         {
             "row": i,

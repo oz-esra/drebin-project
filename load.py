@@ -1,58 +1,31 @@
 import json
-import pickle
+import pandas as pd
 
-import numpy as np
-from sklearn.feature_extraction import DictVectorizer
-
-
-def load_features(feature):
+def load_drebin_dataset(features_path: str, metadata_path: str, max_date: str = "2023-12-31"):
     """
-    Load and process features for a given feature space from the Hypercube Android Malware Dataset.
-
-    Parameters:
-        feature (str): One of {'drebin', 'malscan', 'ramda'}
-
-    Returns:
-        x (np.ndarray or sparse matrix): Feature matrix
-        y (List[int]): Binary labels (1 = malware, 0 = benign)
-        time (List[str]): Corresponding Google Play dates
-        filtered_shas (List[str]): SHA256 hashes aligned with rows in x
+    Loads Hypercube DREBIN features and metadata.
+    Filters by VTT=2 criteria, date range, and SHA-256 alignment.
     """
-
-    feature = feature.lower()
-
-    if feature == 'drebin':
-        with open('hypercube_drebin.json', 'r') as f:
-            all_features = json.load(f)
-
-    elif feature in {'malscan', 'ramda'}:
-        feature_path = f'hypercube_{feature}.pickle'
-        with open(feature_path, 'rb') as f:
-            all_features = pickle.load(f)
-
-    else:
-        raise ValueError("Feature must be one of: 'drebin', 'malscan', 'ramda'")
-
-    with open('hypercube_metadata.json', 'r') as f:
-        metadata = json.load(f)
-
-    filtered_shas = []
-    filtered_features = []
-    y = []
-    time = []
-
-    for entry in metadata:
-        sha = entry['sha256']
-        if sha in all_features:
-            filtered_shas.append(sha)
-            filtered_features.append(all_features[sha])
-            y.append(1 if entry['vt_detection'] >= 2 else 0)
-            time.append(entry['gp_date'])
-
-    if feature == 'drebin':
-        vec = DictVectorizer()
-        x = vec.fit_transform(filtered_features)
-    else:
-        x = np.stack(filtered_features)
-
-    return x, y, time, filtered_shas
+    print("Loading metadata...")
+    df_meta = pd.read_json(metadata_path)
+    
+    # Apply VTT=2 malware labeling (vt_detection >= 2 is malware)
+    df_meta['label'] = (df_meta['vt_detection'] >= 2).astype(int)
+    df_meta['gp_date'] = pd.to_datetime(df_meta['gp_date'])
+    
+    # Filter by 2021-2023 timeframe for VTT=2 target set
+    if max_date:
+        df_meta = df_meta[df_meta['gp_date'] <= max_date].copy()
+        
+    print("Loading DREBIN features...")
+    with open(features_path, 'r') as f:
+        all_features = json.load(f)
+        
+    # SHA-256 key alignment
+    common_shas = set(df_meta['sha256']).intersection(set(all_features.keys()))
+    df_meta = df_meta[df_meta['sha256'].isin(common_shas)].copy()
+    
+    # Sort chronologically for TESSERACT compliance
+    df_sorted = df_meta.sort_values('gp_date').reset_index(drop=True)
+    
+    return df_sorted, all_features
