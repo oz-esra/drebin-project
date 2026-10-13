@@ -1,22 +1,43 @@
+import json
+import argparse
 import numpy as np
+import pandas as pd
 
-# 2024 OOT evaluation F1 scores (replace with your actual array/file loading)
-f1_monthly = np.array([0.92, 0.91, 0.93, 0.90, 0.92, 0.91, 0.93, 0.92, 0.91, 0.90, 0.92, 0.91])
-f1_quarterly = np.array([0.91, 0.90, 0.92, 0.89, 0.91, 0.90, 0.91, 0.91, 0.90, 0.89, 0.91, 0.90])
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", default="experiment2_retraining_frequencies.csv")
+    parser.add_argument("--output", default="results/2021_2023_equivalence.json")
+    args = parser.parse_args()
 
-# Paired differences
-diffs = f1_monthly - f1_quarterly
-mean_diff = np.mean(diffs)
+    df = pd.read_csv(args.input)
+    
+    # 2021-2023 (35 ay) sütun isimleri
+    f1_monthly = df["1M_Monthly_F1"].values
+    f1_quarterly = df["3M_Quarterly_F1"].values
 
-# Paired bootstrap procedure for 95% confidence interval
-rng = np.random.default_rng(seed=42)
-boot_means = [np.mean(rng.choice(diffs, size=len(diffs), replace=True)) for _ in range(10000)]
-ci_lower, ci_upper = np.percentile(boot_means, [2.5, 97.5])
+    diffs = f1_monthly - f1_quarterly
+    mean_diff = float(np.mean(diffs))
 
-# Verification against fixed equivalence margin (+/-0.03)
-margin = 0.03
-is_equivalent = (ci_lower >= -margin) and (ci_upper <= margin)
+    rng = np.random.default_rng(seed=42)
+    boot_means = [np.mean(rng.choice(diffs, size=len(diffs), replace=True)) for _ in range(10000)]
 
-print(f"Mean F1 Difference: {mean_diff:.4f}")
-print(f"95% Confidence Interval: [{ci_lower:.4f}, {ci_upper:.4f}]")
-print(f"Within Equivalence Margin (+/-{margin}): {is_equivalent}")
+    ci_95_lower, ci_95_upper = map(float, np.percentile(boot_means, [2.5, 97.5]))
+    ci_90_lower, ci_90_upper = map(float, np.percentile(boot_means, [5.0, 95.0]))
+
+    margin = 0.03
+    is_equivalent = bool((ci_95_lower >= -margin) and (ci_95_upper <= margin))
+
+    results = {
+        "dataset_period": "2021-02 to 2023-12",
+        "sample_size_months": len(diffs),
+        "mean_f1_difference": round(mean_diff, 4),
+        "ci_95": [round(ci_95_lower, 4), round(ci_95_upper, 4)],
+        "ci_90": [round(ci_90_lower, 4), round(ci_90_upper, 4)],
+        "equivalence_margin": margin,
+        "is_equivalent_within_margin": is_equivalent
+    }
+
+    print(json.dumps(results, indent=2))
+
+if __name__ == "__main__":
+    main()
