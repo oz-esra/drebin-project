@@ -44,7 +44,8 @@ EXPECTED_DEV_SAMPLES_VT_GT0 = 196_447
 # Model and evaluation settings (recorded in the config JSON)
 SEED = 42
 # Linear SVM (hinge loss), as in the Drebin paper (Arp et al., NDSS 2014, Sec. II-C)
-SGD_PARAMS = dict(loss="hinge", penalty="l2", alpha=1e-4, random_state=SEED)
+# class_weight="balanced" as in the 18 Sep baseline (train_evaluate.py, evaluate_decay.py, retrain_monthly.py)
+SGD_PARAMS = dict(loss="hinge", penalty="l2", alpha=1e-4, class_weight="balanced", random_state=SEED)
 N_BOOT_EXP1 = 50
 N_BOOT_EXP2 = 100
 
@@ -367,6 +368,7 @@ def main():
         "init_month": init_month,
         "n_eval_months": len(eval_months),
         "training_scheme": "cumulative (all months up to the last retraining point)",
+        "vocabulary": "built from the full 2021-2023 development set; features unseen in a model's training data keep zero weight under SGD with L2, so predictions equal a train-only vocabulary",
         "retraining_schedules": {k: v for k, v in frequencies.items()},
         "classifier": "SGDClassifier (linear SVM, hinge loss)",
         "pr_auc_score": "decision_function margin",
