@@ -1,0 +1,5 @@
+split,year,metadata,with_features,empty_vectors,final,final_malware,final_goodware,final_malware_ratio
+development,2021,67954,67953,1,67952,7262,60690,0.1069
+development,2022,66376,66375,1,66374,6826,59548,0.1028
+development,2023,62120,62119,1,62118,5556,56562,0.0894
+holdout_2024,2024,29100,28518,0,28518,2908,25610,0.102

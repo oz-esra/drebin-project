@@ -1,0 +1,74 @@
+{
+  "generated_utc": "2026-10-14T14:42:42+00:00",
+  "label_rule": "malware if vt_detection >= 2 (Hypercube VTT=2)",
+  "date_column": "gp_date",
+  "inputs": {
+    "metadata": {
+      "path": "C:\\Users\\esrao\\Downloads\\metadata.json",
+      "sha256": "e2310bdd9b3a9a79a09b253fe8435e3bfa8e76c630dd8a63a5f8c31080e6d9f1"
+    },
+    "original_features": {
+      "path": "C:\\Users\\esrao\\Downloads\\hypercube_drebin.json",
+      "sha256": "2214c2241d23f10235d11e64b9bc096db9ba8555be920aa9aded8cc13a7dad34"
+    },
+    "extended_features": {
+      "path": "C:\\Users\\esrao\\Downloads\\hypercube_extended_2024\\hypercube_drebin.json",
+      "sha256": "da0a71e5362720d275cffa771bc219fe979395d01c8f2c9afa11cae78564ccf3"
+    }
+  },
+  "metadata": {
+    "rows": 225550,
+    "unique_sha256": 225550,
+    "duplicate_sha256_rows": 0,
+    "duplicate_top_level_keys": 0,
+    "unparsed_dates": 0,
+    "dates_outside_2021_2024": 0,
+    "missing_vt_detection": 0,
+    "vt_detection_eq_1": 0
+  },
+  "intersection": {
+    "original": {
+      "feature_file_keys": 196447,
+      "metadata_and_features": 196447,
+      "metadata_only": 29103,
+      "features_only": 0,
+      "duplicate_keys": 0,
+      "unsupported_value_types": 0,
+      "feature_values_other_than_1": {},
+      "empty_vectors": 3
+    },
+    "extended_2024": {
+      "feature_file_keys": 224965,
+      "metadata_and_features": 224965,
+      "metadata_only": 585,
+      "features_only": 0,
+      "duplicate_keys": 0,
+      "unsupported_value_types": 0,
+      "feature_values_other_than_1": {},
+      "empty_vectors": 3
+    }
+  },
+  "development_2021_2023": {
+    "metadata": 196450,
+    "with_original_features": 196447,
+    "empty_vectors": 3,
+    "final": 196444,
+    "final_malware": 19644
+  },
+  "holdout_2024": {
+    "metadata": 29100,
+    "with_extended_features": 28518,
+    "empty_vectors": 0,
+    "final": 28518,
+    "final_malware": 2908,
+    "extended_file_contains_2024": true
+  },
+  "dev_samples_in_both_files": 196447,
+  "dev_samples_with_different_features_between_files": 0,
+  "identical_feature_sets": {
+    "groups": 8419,
+    "samples_in_groups": 34748,
+    "groups_with_label_conflict": 220,
+    "groups_spanning_months": 5815
+  }
+}
