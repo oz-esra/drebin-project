@@ -10,7 +10,9 @@ check. I also report the TOST p-value (equivalent to the 90% CI criterion)
 and the ordinary two-sided test against zero, so "statistically different"
 and "practically equivalent" can both be stated.
 
-Usage:  python equivalence_test.py
+Usage:  python equivalence_test.py                       (primary hypothesis H1)
+        python equivalence_test.py --set excl_overlap    (sensitivity: overlapping test samples removed)
+        python equivalence_test.py --variant balanced    (sensitivity: cost-sensitive SVM)
 """
 import argparse
 
@@ -27,11 +29,16 @@ N_BOOT = 10_000
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--input", default=str(v2.RESULTS_DIR / "retraining" / "monthly_f1_wide.csv"))
+    ap.add_argument("--variant", choices=list(v2.VARIANTS), default="primary")
+    ap.add_argument("--set", choices=["all", "excl_overlap"], default="all",
+                    help="all test samples (primary) or overlapping test samples removed")
     ap.add_argument("--reference", default="Cum-1M")
     ap.add_argument("--candidate", default="Cum-3M")
-    ap.add_argument("--output", default=str(v2.RESULTS_DIR / "equivalence_cum3m_vs_cum1m.json"))
     args = ap.parse_args()
+    base = v2.results_dir(args.variant)
+    suffix = "" if args.set == "all" else "_excl_overlap"
+    args.input = str(base / "retraining" / f"monthly_f1_wide{suffix}.csv")
+    args.output = str(base / f"equivalence_cum3m_vs_cum1m{suffix}.json")
 
     wide = pd.read_csv(args.input, dtype={"month": str}).set_index("month").sort_index()
     pair = wide[[args.reference, args.candidate]]
@@ -55,6 +62,7 @@ def main():
 
     inside = lambda ci: bool(-MARGIN < ci[0] and ci[1] < MARGIN)
     result = {
+        "variant": args.variant, "test_set": args.set,
         "hypothesis": f"{args.candidate} is equivalent to {args.reference} within +/-{MARGIN} F1",
         "difference": f"F1({args.reference}) - F1({args.candidate}) per month",
         "months": [pair.index[0], pair.index[-1]], "n_months": n,

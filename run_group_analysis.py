@@ -18,6 +18,8 @@ model's F1 is only an association. The leave-one-out comparison (does removing
 a group change the decline of F1 over time?) is the controlled ablation that
 can support a statement about a group contributing to degradation.
 
+This analysis is part of the primary protocol only (class_weight=None).
+
 Usage:  python run_group_analysis.py
 """
 import json
@@ -28,7 +30,7 @@ from scipy import stats
 
 import v2_common as v2
 
-OUT = v2.RESULTS_DIR / "groups"
+OUT = v2.results_dir("primary") / "groups"
 TRAIN = ("2021-01", "2021-12")
 
 
@@ -39,7 +41,7 @@ def f1_slope_per_year(months, f1):
 
 
 def main():
-    selection_file = v2.RESULTS_DIR / "c_selection.json"
+    selection_file = v2.results_dir("primary") / "c_selection.json"
     if not selection_file.exists():
         raise SystemExit("results/v2/c_selection.json not found: run select_c.py first.")
     C = json.loads(selection_file.read_text())["selected_C"]
@@ -131,7 +133,7 @@ def main():
         "C": C, "c_selection_sha256": v2.sha256_file(selection_file),
         "train_months": TRAIN, "test_months": [test_months[0], test_months[-1]],
         "groups_present": present, "models": [s[0] for s in specs],
-        "svm_params": v2.SVM_PARAMS, "decision_threshold": v2.DECISION_THRESHOLD,
+        "svm_params": v2.svm_params("primary"), "decision_threshold": v2.DECISION_THRESHOLD,
         "inputs": provenance, "run": v2.run_info(),
     })
     print(f"\nResults written to {OUT}/")

@@ -1,0 +1,13 @@
+feature_file,year,metadata_and_features,metadata_only,features_only
+original,2021,67953,1,0
+original,2022,66375,1,0
+original,2023,62119,1,0
+original,2024,0,29100,0
+original,no metadata,0,0,0
+original,total,196447,29103,0
+extended_2024,2021,67953,1,0
+extended_2024,2022,66375,1,0
+extended_2024,2023,62119,1,0
+extended_2024,2024,28518,582,0
+extended_2024,no metadata,0,0,0
+extended_2024,total,224965,585,0

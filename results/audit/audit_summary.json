@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-10-14T14:42:42+00:00",
+  "generated_utc": "2026-10-21T13:01:36+00:00",
   "label_rule": "malware if vt_detection >= 2 (Hypercube VTT=2)",
   "date_column": "gp_date",
   "inputs": {
@@ -61,7 +61,11 @@
     "empty_vectors": 0,
     "final": 28518,
     "final_malware": 2908,
-    "extended_file_contains_2024": true
+    "extended_file_contains_2024": true,
+    "missing_features": 582,
+    "missing_features_malware": 2,
+    "missing_malware_ratio": 0.0034,
+    "retained_malware_ratio": 0.102
   },
   "dev_samples_in_both_files": 196447,
   "dev_samples_with_different_features_between_files": 0,

@@ -40,11 +40,12 @@ DEV_START, DEV_END = "2021-01", "2023-12"
 TEST_START, TEST_END = "2022-01", "2023-12"
 EXPECTED_DEV_SAMPLES = 196_444        # from the dataset audit (3 empty vectors removed)
 
-# C selection, done once inside 2021 (see select_c.py)
+# C selection, done once inside 2021 (see select_c.py). Selection metric:
+# unweighted mean of the monthly F1 scores of October, November and December.
 C_GRID = (0.01, 0.1, 1.0, 10.0)
 C_TRAIN = ("2021-01", "2021-09")
-C_VALID = ("2021-10", "2021-12")
-C_TIE_DECIMALS = 3                    # equal F1 at 3 decimals -> smaller C wins
+C_VALID_MONTHS = ("2021-10", "2021-11", "2021-12")
+C_TIE_DECIMALS = 3                    # equal mean F1 at 3 decimals -> smaller C wins
 
 # Classifier (LIBLINEAR through scikit-learn's LinearSVC)
 SEED = 42
@@ -52,7 +53,7 @@ SVM_PARAMS = dict(
     penalty="l2",
     loss="squared_hinge",             # LIBLINEAR default L2-loss SVM
     dual=True,                        # many more features than samples
-    class_weight="balanced",
+    class_weight=None,                # primary Drebin replication: no error-cost reweighting
     fit_intercept=True,
     intercept_scaling=1.0,
     tol=1e-4,
@@ -60,6 +61,22 @@ SVM_PARAMS = dict(
     random_state=SEED,
 )
 DECISION_THRESHOLD = 0.0              # standard SVM threshold, not tuned
+
+# Variants. "primary" is the Drebin replication; "balanced" is the pre-registered
+# cost-sensitive sensitivity analysis. Each variant selects its own C with the
+# same rule (class weights can change the best C) and writes to its own folder.
+VARIANTS = {
+    "primary": {"class_weight": None, "results_dir": Path("results/v2")},
+    "balanced": {"class_weight": "balanced", "results_dir": Path("results/v2/sensitivity_balanced")},
+}
+
+
+def svm_params(variant="primary"):
+    return {**SVM_PARAMS, "class_weight": VARIANTS[variant]["class_weight"]}
+
+
+def results_dir(variant="primary"):
+    return VARIANTS[variant]["results_dir"]
 
 # Uncertainty
 N_BOOTSTRAP = 1000                    # within-month bootstrap for F1 CIs
@@ -247,7 +264,7 @@ def feature_groups(feature_names):
 # ------------------------------------------------------------------------------
 # Training and evaluation
 # ------------------------------------------------------------------------------
-def fit_svm(X_train, y_train, C, allowed_cols=None):
+def fit_svm(X_train, y_train, C, allowed_cols=None, variant="primary"):
     """Fit LinearSVC on the columns seen in the training rows.
 
     allowed_cols optionally restricts the candidate columns (used for the
@@ -255,7 +272,8 @@ def fit_svm(X_train, y_train, C, allowed_cols=None):
     """
     seen = np.unique(X_train.indices)
     cols = seen if allowed_cols is None else np.intersect1d(seen, allowed_cols, assume_unique=True)
-    clf = LinearSVC(C=C, **SVM_PARAMS)
+    params = svm_params(variant)
+    clf = LinearSVC(C=C, **params)
     start = datetime.now()
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always", ConvergenceWarning)
@@ -264,7 +282,7 @@ def fit_svm(X_train, y_train, C, allowed_cols=None):
     converged = not any(issubclass(w.category, ConvergenceWarning) for w in caught)
     n_iter = int(np.max(clf.n_iter_))
     info = {"n_train": int(X_train.shape[0]), "n_features": int(len(cols)),
-            "n_iter": n_iter, "converged": bool(converged and n_iter < SVM_PARAMS["max_iter"]),
+            "n_iter": n_iter, "converged": bool(converged and n_iter < params["max_iter"]),
             "fit_seconds": round(seconds, 1)}
     return clf, cols, info
 
@@ -276,6 +294,9 @@ def decision_scores(clf, cols, X):
 def evaluate(y_true, scores, rng=None):
     """Metrics at the frozen threshold, AP from the scores, bootstrap CI for F1."""
     y_true = np.asarray(y_true).astype(np.int8)
+    if len(y_true) == 0:   # e.g. every test sample removed by the overlap sensitivity analysis
+        keys = ["precision", "recall", "f1", "fpr", "average_precision", "f1_ci_low", "f1_ci_high"]
+        return {"n": 0, "n_malware": 0, "tp": 0, "fp": 0, "fn": 0, "tn": 0, **{k: np.nan for k in keys}}
     y_pred = (scores > DECISION_THRESHOLD).astype(np.int8)
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
 

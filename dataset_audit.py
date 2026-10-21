@@ -8,6 +8,10 @@ Reports, as requested by Prof. Lanzi on 14 Oct 2026:
   * empty feature vectors (and any feature value other than 1)
   * final sample counts for development (2021-2023) and holdout (2024)
   * whether the extended feature file actually contains the 2024 samples
+  * full two-way metadata-feature intersection per file and year
+    (intersection_two_way.csv)
+  * 2024 samples without features (excluded by the missing-data rule) against
+    the retained ones, by month and class (holdout_missing_vs_retained.csv)
 
 Also reports, for information:
   * whether the 2021-2023 samples have identical feature sets in the original
@@ -27,6 +31,7 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 DEFAULT_METADATA = r"C:\Users\esrao\Downloads\metadata.json"
@@ -171,6 +176,26 @@ def main():
         pd.Series(sorted(f["keys"] - meta_shas), name="sha256").to_csv(
             out / f"features_only_{name}.csv", index=False)
 
+    # ---- full two-way metadata-feature intersection, per file and per year
+    # (feature-only hashes have no metadata, hence no year: reported as "no metadata")
+    two_way = []
+    for name, f, col in (("original", orig, "in_original"), ("extended_2024", ext, "in_extended")):
+        for year, g in meta.groupby("year", dropna=False):
+            two_way.append({
+                "feature_file": name, "year": str(int(year)) if pd.notna(year) else "unknown",
+                "metadata_and_features": int(g[col].sum()),
+                "metadata_only": int((~g[col]).sum()),
+                "features_only": 0,
+            })
+        two_way.append({"feature_file": name, "year": "no metadata",
+                        "metadata_and_features": 0, "metadata_only": 0,
+                        "features_only": len(f["keys"] - meta_shas)})
+        two_way.append({"feature_file": name, "year": "total",
+                        "metadata_and_features": len(meta_shas & f["keys"]),
+                        "metadata_only": len(meta_shas - f["keys"]),
+                        "features_only": len(f["keys"] - meta_shas)})
+    pd.DataFrame(two_way).to_csv(out / "intersection_two_way.csv", index=False)
+
     # ---- counts by month (dev uses original features, holdout uses extended)
     meta["split"] = "other"
     meta.loc[is_dev, "split"] = "development"
@@ -201,6 +226,35 @@ def main():
     by_year = counts(["split", "year"])
     by_month.to_csv(out / "counts_by_month.csv", index=False)
     by_year.to_csv(out / "counts_by_year.csv", index=False)
+
+    # ---- 2024 samples without features (excluded by the missing-data rule)
+    # compared with the retained 2024 samples, by month and by class
+    hold = meta[is_hold].copy()
+    hold["status"] = np.where(hold["has_features"], "retained", "missing_features")
+    by_m = hold.groupby(["month", "status", "label"]).size().unstack(["status", "label"], fill_value=0)
+    by_m.columns = [f"{s}_{'malware' if l == 1 else 'goodware'}" for s, l in by_m.columns]
+    for s in ("retained", "missing_features"):
+        for c in ("malware", "goodware"):
+            by_m[f"{s}_{c}"] = by_m.get(f"{s}_{c}", 0)
+        by_m[f"{s}_total"] = by_m[f"{s}_malware"] + by_m[f"{s}_goodware"]
+    by_m["missing_share"] = (by_m["missing_features_total"] /
+                             (by_m["missing_features_total"] + by_m["retained_total"])).round(4)
+    by_m["retained_malware_ratio"] = (by_m["retained_malware"] / by_m["retained_total"]).round(4)
+    by_m["missing_malware_ratio"] = (by_m["missing_features_malware"] /
+                                     by_m["missing_features_total"].replace(0, np.nan)).round(4)
+    cols = ["retained_total", "retained_malware", "retained_goodware", "retained_malware_ratio",
+            "missing_features_total", "missing_features_malware", "missing_features_goodware",
+            "missing_malware_ratio", "missing_share"]
+    by_m = by_m[cols].reset_index()
+    total = by_m[[c for c in cols if not c.endswith(("ratio", "share"))]].sum()
+    total_row = {"month": "total", **total.to_dict(),
+                 "retained_malware_ratio": round(total["retained_malware"] / total["retained_total"], 4),
+                 "missing_malware_ratio": round(total["missing_features_malware"] /
+                                                max(total["missing_features_total"], 1), 4),
+                 "missing_share": round(total["missing_features_total"] /
+                                        (total["missing_features_total"] + total["retained_total"]), 4)}
+    by_m = pd.concat([by_m, pd.DataFrame([total_row])], ignore_index=True)
+    by_m.to_csv(out / "holdout_missing_vs_retained.csv", index=False)
 
     # ---- duplicates
     meta_dup_rows.to_csv(out / "duplicate_sha256_metadata.csv", index=False)
@@ -274,6 +328,10 @@ def main():
             "final": split_total("holdout_2024", "final"),
             "final_malware": int((meta["final"] & is_hold & (meta["label"] == 1)).sum()),
             "extended_file_contains_2024": bool(split_total("holdout_2024", "has_features") > 0),
+            "missing_features": total_row["missing_features_total"],
+            "missing_features_malware": total_row["missing_features_malware"],
+            "missing_malware_ratio": total_row["missing_malware_ratio"],
+            "retained_malware_ratio": total_row["retained_malware_ratio"],
         },
         "dev_samples_in_both_files": int(len(dev_shas)),
         "dev_samples_with_different_features_between_files": len(differing),
@@ -302,6 +360,8 @@ def main():
     print(f"Holdout 2024:          metadata {h['metadata']:,} -> with features {h['with_extended_features']:,} "
           f"-> final {h['final']:,} (malware {h['final_malware']:,})")
     print(f"Extended file contains 2024 samples: {h['extended_file_contains_2024']}")
+    print(f"2024 without features: {h['missing_features']:,} (malware ratio {h['missing_malware_ratio']}) "
+          f"vs retained malware ratio {h['retained_malware_ratio']}; by month: holdout_missing_vs_retained.csv")
     print(f"2021-2023 samples whose features differ between files: {len(differing):,} of {len(dev_shas):,}")
     ifs = summary["identical_feature_sets"]
     print(f"Identical feature sets: {ifs['groups']:,} groups, {ifs['samples_in_groups']:,} samples, "
