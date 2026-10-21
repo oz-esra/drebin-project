@@ -1,0 +1,73 @@
+{
+  "variant": "balanced",
+  "test_set": "all",
+  "hypothesis": "Cum-3M is equivalent to Cum-1M within +/-0.03 F1",
+  "difference": "F1(Cum-1M) - F1(Cum-3M) per month",
+  "months": [
+    "2022-01",
+    "2023-12"
+  ],
+  "n_months": 24,
+  "mean_diff": 0.03211062568576503,
+  "sd_diff": 0.03456217189568573,
+  "ci95_t": [
+    0.017516300452260596,
+    0.04670495091926947
+  ],
+  "ci95_bootstrap_months": [
+    0.018910789358310906,
+    0.04625553941102599
+  ],
+  "ci90_t": [
+    0.020019306968543052,
+    0.04420194440298701
+  ],
+  "p_two_sided_vs_zero": 0.00014236298482178482,
+  "p_tost": 0.6162509342791698,
+  "margin": 0.03,
+  "alpha": 0.05,
+  "primary_criterion": "95% t-based CI entirely inside the margin",
+  "equivalent_primary": false,
+  "equivalent_bootstrap_check": false,
+  "difference_significant": true,
+  "diffs": {
+    "2022-01": 0.0,
+    "2022-02": 0.008666,
+    "2022-03": 0.0663,
+    "2022-04": 0.0,
+    "2022-05": 0.034456,
+    "2022-06": 0.083422,
+    "2022-07": 0.0,
+    "2022-08": 0.047043,
+    "2022-09": 0.086217,
+    "2022-10": 0.0,
+    "2022-11": 0.05294,
+    "2022-12": 0.108732,
+    "2023-01": 0.0,
+    "2023-02": 0.028137,
+    "2023-03": 0.060479,
+    "2023-04": 0.0,
+    "2023-05": 0.04217,
+    "2023-06": 0.039214,
+    "2023-07": 0.0,
+    "2023-08": -0.016893,
+    "2023-09": 0.048152,
+    "2023-10": 0.0,
+    "2023-11": 0.012249,
+    "2023-12": 0.06937
+  },
+  "input_file": "results\\v2\\sensitivity_balanced\\retraining\\monthly_f1_wide.csv",
+  "input_sha256": "5eb8d9c502fbc1289f7f7375f38268b277e425719f4c95a2f8a67c64b4eb9204",
+  "run": {
+    "generated_utc": "2026-10-21T14:30:55+00:00",
+    "git_commit": "0ea580ed382e8fa8b9572c4bc907f08673c3051d",
+    "git_tag": null,
+    "git_dirty": true,
+    "python": "3.13.15",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "3.0.5",
+    "scikit_learn": "1.9.0"
+  }
+}
