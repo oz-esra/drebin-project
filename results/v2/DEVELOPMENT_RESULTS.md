@@ -140,7 +140,7 @@ Positive slope change = flatter decline without the group.
 | Claim | Analysis | Result file(s) | Commit |
 |---|---|---|---|
 | Final development sample of 196,444 | Dataset audit | `results/audit/audit_summary.json` | `a55900e` |
-| C = 0.1 (primary), C = 0.01 (balanced) | C selection within 2021 | `results/v2/c_selection.csv`, `results/v2/sensitivity_balanced/c_selection.csv` | `<C_SELECTION_COMMIT>`, `a159391` |
+| C = 0.1 (primary), C = 0.01 (balanced) | C selection within 2021 | `results/v2/c_selection.csv`, `results/v2/sensitivity_balanced/c_selection.csv` | `0bc02c9`, `a159391` |
 | Policy means (Section 3) | Retraining policies, primary | `results/v2/retraining/summary.csv`, `monthly_metrics.csv` | `abc715b` |
 | H1 not supported | Equivalence test, primary | `results/v2/equivalence_cum3m_vs_cum1m.json` | `abc715b` |
 | H1 not supported without overlapping samples | Equivalence test, overlap excluded | `results/v2/equivalence_cum3m_vs_cum1m_excl_overlap.json` | `8583e32` |
