@@ -1,0 +1,16 @@
+model,group,n_train,n_features,n_iter,converged,fit_seconds
+Full,all,67952,858701,1012,True,20.1
+Only-S2,S2,67952,37746,366,True,3.4
+Only-S3,S3,67952,386314,460,True,5.2
+Only-S4,S4,67952,4181,120,True,0.9
+Only-S5,S5,67952,318,204,True,2.8
+Only-S6,S6,67952,55,63,True,0.5
+Only-S7,S7,67952,17,41,True,0.3
+Only-S8,S8,67952,430070,737,True,10.4
+Without-S2,S2,67952,820955,1196,True,24.2
+Without-S3,S3,67952,472387,929,True,15.3
+Without-S4,S4,67952,854520,1156,True,21.0
+Without-S5,S5,67952,858383,1242,True,19.7
+Without-S6,S6,67952,858646,1272,True,21.0
+Without-S7,S7,67952,858684,998,True,18.7
+Without-S8,S8,67952,428631,833,True,13.8
