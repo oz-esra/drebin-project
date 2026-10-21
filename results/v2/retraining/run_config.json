@@ -1,0 +1,84 @@
+{
+  "variant": "primary",
+  "C": 0.1,
+  "c_selection_file": "results\\v2\\c_selection.json",
+  "c_selection_sha256": "4bea249929e21b209396f615fea92548690d1c5029d5cc8f3a66caff4f407130",
+  "policies": {
+    "Static": {
+      "every": null,
+      "window": null,
+      "family": "A"
+    },
+    "Cum-1M": {
+      "every": 1,
+      "window": null,
+      "family": "A"
+    },
+    "Cum-3M": {
+      "every": 3,
+      "window": null,
+      "family": "A,B"
+    },
+    "Cum-6M": {
+      "every": 6,
+      "window": null,
+      "family": "A"
+    },
+    "SW12-3M": {
+      "every": 3,
+      "window": 12,
+      "family": "B"
+    },
+    "SW6-3M": {
+      "every": 3,
+      "window": 6,
+      "family": "B"
+    }
+  },
+  "initial_training": "2021-01..2021-12 (SW6: 2021-07..2021-12)",
+  "test_months": [
+    "2022-01",
+    "2023-12"
+  ],
+  "svm_params": {
+    "penalty": "l2",
+    "loss": "squared_hinge",
+    "dual": true,
+    "class_weight": null,
+    "fit_intercept": true,
+    "intercept_scaling": 1.0,
+    "tol": 0.0001,
+    "max_iter": 10000,
+    "random_state": 42
+  },
+  "decision_threshold": 0.0,
+  "label": "vt_detection >= 2",
+  "date_column": "gp_date",
+  "n_bootstrap": 1000,
+  "seed": 42,
+  "unique_models_fitted": 39,
+  "inputs": {
+    "metadata": {
+      "path": "C:\\Users\\esrao\\Downloads\\metadata.json",
+      "sha256": "e2310bdd9b3a9a79a09b253fe8435e3bfa8e76c630dd8a63a5f8c31080e6d9f1"
+    },
+    "features": {
+      "path": "C:\\Users\\esrao\\Downloads\\hypercube_drebin.json",
+      "sha256": "2214c2241d23f10235d11e64b9bc096db9ba8555be920aa9aded8cc13a7dad34"
+    },
+    "n_samples": 196444,
+    "n_features_dev": 2116260
+  },
+  "run": {
+    "generated_utc": "2026-10-21T13:23:27+00:00",
+    "git_commit": "0bc02c90ce67a7d36ad5e964b31499c656b04ba0",
+    "git_tag": null,
+    "git_dirty": false,
+    "python": "3.13.15",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "3.0.5",
+    "scikit_learn": "1.9.0"
+  }
+}
