@@ -1,0 +1,22 @@
+{
+  "variant": "primary",
+  "test_set": "all",
+  "note": "Secondary, descriptive comparisons defined in PROTOCOL v2 Section 7. No equivalence claim outside H1; no multiple-comparison correction.",
+  "alpha": 0.05,
+  "n_bootstrap": 10000,
+  "seed": 42,
+  "source_file": "results\\v2\\retraining\\monthly_metrics.csv",
+  "source_sha256": "491d135767a20f3d0747dc9a38f914315005f8a89280ccebf6557d4f1b2dee2f",
+  "run": {
+    "generated_utc": "2026-10-21T13:57:54+00:00",
+    "git_commit": "8149a31a98f7769cd353a4de8a85bf8ca5c41e60",
+    "git_tag": null,
+    "git_dirty": true,
+    "python": "3.13.15",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "3.0.5",
+    "scikit_learn": "1.9.0"
+  }
+}

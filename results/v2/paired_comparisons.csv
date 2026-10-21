@@ -1,0 +1,19 @@
+family,policy,comparator,metric,difference,mean_policy,mean_comparator,n_months,mean_diff,sd_diff,ci95_t_low,ci95_t_high,ci95_boot_low,ci95_boot_high,p_two_sided_vs_zero
+A,Cum-3M,Cum-1M,f1,f1(Cum-3M) - f1(Cum-1M),0.600934,0.646481,24,-0.045548,0.043171,-0.063777,-0.027318,-0.062997,-0.02906,3.1e-05
+A,Cum-3M,Cum-1M,average_precision,average_precision(Cum-3M) - average_precision(Cum-1M),0.639776,0.685659,24,-0.045883,0.046383,-0.065469,-0.026297,-0.064902,-0.027852,6.8e-05
+A,Cum-6M,Cum-1M,f1,f1(Cum-6M) - f1(Cum-1M),0.512831,0.646481,24,-0.13365,0.110687,-0.180389,-0.086911,-0.178372,-0.092308,5e-06
+A,Cum-6M,Cum-1M,average_precision,average_precision(Cum-6M) - average_precision(Cum-1M),0.564132,0.685659,24,-0.121528,0.104217,-0.165535,-0.077521,-0.163753,-0.081458,8e-06
+A,Cum-6M,Cum-3M,f1,f1(Cum-6M) - f1(Cum-3M),0.512831,0.600934,24,-0.088103,0.115658,-0.136941,-0.039265,-0.13515,-0.045788,0.001092
+A,Cum-6M,Cum-3M,average_precision,average_precision(Cum-6M) - average_precision(Cum-3M),0.564132,0.639776,24,-0.075645,0.100193,-0.117953,-0.033337,-0.116864,-0.039325,0.001185
+A,Cum-1M,Static,f1,f1(Cum-1M) - f1(Static),0.646481,0.369689,24,0.276792,0.115652,0.227956,0.325628,0.229551,0.31915,0.0
+A,Cum-1M,Static,average_precision,average_precision(Cum-1M) - average_precision(Static),0.685659,0.451348,24,0.234311,0.109317,0.188151,0.280471,0.18971,0.274972,0.0
+A,Cum-3M,Static,f1,f1(Cum-3M) - f1(Static),0.600934,0.369689,24,0.231244,0.123931,0.178913,0.283576,0.180472,0.279165,0.0
+A,Cum-3M,Static,average_precision,average_precision(Cum-3M) - average_precision(Static),0.639776,0.451348,24,0.188428,0.116605,0.13919,0.237666,0.14126,0.233572,0.0
+A,Cum-6M,Static,f1,f1(Cum-6M) - f1(Static),0.512831,0.369689,24,0.143142,0.12121,0.091959,0.194324,0.097306,0.190907,7e-06
+A,Cum-6M,Static,average_precision,average_precision(Cum-6M) - average_precision(Static),0.564132,0.451348,24,0.112784,0.120683,0.061824,0.163743,0.066447,0.159846,0.000133
+B,SW12-3M,Cum-3M,f1,f1(SW12-3M) - f1(Cum-3M),0.617063,0.600934,24,0.01613,0.024754,0.005677,0.026582,0.006515,0.025589,0.004053
+B,SW12-3M,Cum-3M,average_precision,average_precision(SW12-3M) - average_precision(Cum-3M),0.646253,0.639776,24,0.006477,0.01395,0.000586,0.012367,0.001058,0.011983,0.03258
+B,SW6-3M,Cum-3M,f1,f1(SW6-3M) - f1(Cum-3M),0.610962,0.600934,24,0.010028,0.023285,0.000196,0.019861,0.001055,0.019246,0.045955
+B,SW6-3M,Cum-3M,average_precision,average_precision(SW6-3M) - average_precision(Cum-3M),0.647561,0.639776,24,0.007785,0.017641,0.000336,0.015234,0.000616,0.014592,0.041273
+B,SW6-3M,SW12-3M,f1,f1(SW6-3M) - f1(SW12-3M),0.610962,0.617063,24,-0.006101,0.012151,-0.011232,-0.00097,-0.011016,-0.001468,0.021838
+B,SW6-3M,SW12-3M,average_precision,average_precision(SW6-3M) - average_precision(SW12-3M),0.647561,0.646253,24,0.001308,0.017898,-0.006249,0.008866,-0.005419,0.008523,0.723572
