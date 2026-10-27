@@ -1,0 +1,69 @@
+{
+  "description": "complete holdout procedure run on the development period (2023 as pseudo-holdout); no 2024 data read",
+  "passed": true,
+  "period": [
+    "2023-01",
+    "2023-12"
+  ],
+  "comparison": {
+    "primary": {
+      "rows_compared": 72,
+      "same_training_windows": true,
+      "max_abs_metric_difference": 0.0,
+      "passed": true
+    },
+    "balanced": {
+      "rows_compared": 72,
+      "same_training_windows": true,
+      "max_abs_metric_difference": 0.0,
+      "passed": true
+    }
+  },
+  "variants": {
+    "primary": {
+      "C": 0.1,
+      "unique_models": 21,
+      "all_converged": true
+    },
+    "balanced": {
+      "C": 0.01,
+      "unique_models": 21,
+      "all_converged": true
+    }
+  },
+  "fixture_outputs": "cache\\holdout_fixture\\20261027_214226",
+  "source_sha256": {
+    "v2_common.py": "ab113f07e995e9ccb6c107361a6a3a333326d78081313bb8302d3e3c0f5305dd",
+    "run_holdout_2024.py": "257c9db1680e939854ff7efde21bab40acd6bfc5340d6b0b765c38b260897f2b",
+    "run_retraining_experiments.py": "64ba7d9ce1b05490f132f9886a9e8f69f7c186ef1c2ac274a1d4e5d7608d2af8",
+    "paired_comparisons.py": "d061b640c5977f45509292eb7675131858c8596308145f802b203f34fbd41a7c"
+  },
+  "inputs": {
+    "metadata": {
+      "path": "C:\\Users\\esrao\\Downloads\\metadata.json",
+      "sha256": "e2310bdd9b3a9a79a09b253fe8435e3bfa8e76c630dd8a63a5f8c31080e6d9f1"
+    },
+    "features": {
+      "path": "C:\\Users\\esrao\\Downloads\\hypercube_drebin.json",
+      "sha256": "2214c2241d23f10235d11e64b9bc096db9ba8555be920aa9aded8cc13a7dad34"
+    },
+    "n_samples": 196444,
+    "n_features_dev": 2116260
+  },
+  "protocol_tag": "protocol-v2",
+  "protocol_tag_commit": "a55900ed2dffcb19ae8189cadad50ef48a2dc846",
+  "code_descends_from_tag": true,
+  "run": {
+    "generated_utc": "2026-10-27T20:42:21+00:00",
+    "git_commit": "36e070c52044d5393df6e42517fe47b06681e1c3",
+    "git_tag": null,
+    "git_dirty": false,
+    "python": "3.13.15",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "3.0.5",
+    "scikit_learn": "1.9.0"
+  },
+  "finished_utc": "2026-10-27T21:11:25+00:00"
+}
