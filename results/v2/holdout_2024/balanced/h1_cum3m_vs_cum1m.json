@@ -1,0 +1,51 @@
+{
+  "difference": "F1(Cum-1M) - F1(Cum-3M) per month, 2024-01..2024-12",
+  "all": {
+    "n_months": 12,
+    "mean_diff": 0.02165364112482851,
+    "sd_diff": 0.027660788858036984,
+    "ci95_t": [
+      0.004078814356778711,
+      0.03922846789287831
+    ],
+    "ci95_bootstrap_months": [
+      0.007295901112009094,
+      0.036848457669938404
+    ],
+    "ci90_t": [
+      0.007313533269317132,
+      0.035993748980339885
+    ],
+    "p_two_sided_vs_zero": 0.02022586508886481,
+    "p_tost": 0.15916514332993184,
+    "margin": 0.03,
+    "alpha": 0.05,
+    "equivalent_primary": false,
+    "equivalent_bootstrap_check": false,
+    "difference_significant": true
+  },
+  "excl_overlap": {
+    "n_months": 12,
+    "mean_diff": 0.007085209761936532,
+    "sd_diff": 0.020185679874420697,
+    "ci95_t": [
+      -0.005740159348430532,
+      0.019910578872303596
+    ],
+    "ci95_bootstrap_months": [
+      -0.004140121776782472,
+      0.017440771609859105
+    ],
+    "ci90_t": [
+      -0.003379597587616432,
+      0.017550017111489496
+    ],
+    "p_two_sided_vs_zero": 0.2494704567149613,
+    "p_tost": 0.001171100492088902,
+    "margin": 0.03,
+    "alpha": 0.05,
+    "equivalent_primary": true,
+    "equivalent_bootstrap_check": true,
+    "difference_significant": false
+  }
+}

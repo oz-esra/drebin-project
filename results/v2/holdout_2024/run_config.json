@@ -1,0 +1,123 @@
+{
+  "description": "single 2024 out-of-time evaluation, PROTOCOL v2 Section 8",
+  "holdout_months": [
+    "2024-01",
+    "2024-12"
+  ],
+  "n_holdout_samples": 28518,
+  "features_first_seen_in_2024": 343213,
+  "variants": {
+    "primary": {
+      "C": 0.1,
+      "unique_models": 21,
+      "all_converged": true
+    },
+    "balanced": {
+      "C": 0.01,
+      "unique_models": 21,
+      "all_converged": true
+    }
+  },
+  "primary_variant": "primary (class_weight=None), confirmatory",
+  "secondary_variant": "balanced (cost-sensitive), pre-registered secondary",
+  "policies": {
+    "Static": {
+      "every": null,
+      "window": null,
+      "family": "A"
+    },
+    "Cum-1M": {
+      "every": 1,
+      "window": null,
+      "family": "A"
+    },
+    "Cum-3M": {
+      "every": 3,
+      "window": null,
+      "family": "A,B"
+    },
+    "Cum-6M": {
+      "every": 6,
+      "window": null,
+      "family": "A"
+    },
+    "SW12-3M": {
+      "every": 3,
+      "window": 12,
+      "family": "B"
+    },
+    "SW6-3M": {
+      "every": 3,
+      "window": 6,
+      "family": "B"
+    }
+  },
+  "svm_params": {
+    "primary": {
+      "penalty": "l2",
+      "loss": "squared_hinge",
+      "dual": true,
+      "class_weight": null,
+      "fit_intercept": true,
+      "intercept_scaling": 1.0,
+      "tol": 0.0001,
+      "max_iter": 10000,
+      "random_state": 42
+    },
+    "balanced": {
+      "penalty": "l2",
+      "loss": "squared_hinge",
+      "dual": true,
+      "class_weight": "balanced",
+      "fit_intercept": true,
+      "intercept_scaling": 1.0,
+      "tol": 0.0001,
+      "max_iter": 10000,
+      "random_state": 42
+    }
+  },
+  "decision_threshold": 0.0,
+  "inputs": {
+    "metadata": {
+      "path": "C:\\Users\\esrao\\Downloads\\metadata.json",
+      "sha256": "e2310bdd9b3a9a79a09b253fe8435e3bfa8e76c630dd8a63a5f8c31080e6d9f1"
+    },
+    "features": {
+      "path": "C:\\Users\\esrao\\Downloads\\hypercube_drebin.json",
+      "sha256": "2214c2241d23f10235d11e64b9bc096db9ba8555be920aa9aded8cc13a7dad34"
+    },
+    "n_samples": 196444,
+    "n_features_dev": 2116260,
+    "extended_features": {
+      "path": "C:\\Users\\esrao\\Downloads\\hypercube_extended_2024\\hypercube_drebin.json",
+      "sha256": "da0a71e5362720d275cffa771bc219fe979395d01c8f2c9afa11cae78564ccf3"
+    }
+  },
+  "protocol_tag": "protocol-v2",
+  "protocol_tag_commit": "a55900ed2dffcb19ae8189cadad50ef48a2dc846",
+  "code_descends_from_tag": true,
+  "source_sha256": {
+    "v2_common.py": "ab113f07e995e9ccb6c107361a6a3a333326d78081313bb8302d3e3c0f5305dd",
+    "run_holdout_2024.py": "257c9db1680e939854ff7efde21bab40acd6bfc5340d6b0b765c38b260897f2b",
+    "run_retraining_experiments.py": "64ba7d9ce1b05490f132f9886a9e8f69f7c186ef1c2ac274a1d4e5d7608d2af8",
+    "paired_comparisons.py": "d061b640c5977f45509292eb7675131858c8596308145f802b203f34fbd41a7c"
+  },
+  "fixture_check": {
+    "file": "results\\v2\\holdout_fixture_check.json",
+    "sha256": "4fb86d113766c712997dcc070a29ef0fa5a7bbba9619d932e80f099fc3718fbb"
+  },
+  "previous_failed_attempts": [],
+  "run": {
+    "generated_utc": "2026-10-29T09:48:27+00:00",
+    "git_commit": "e2dbb2ccaa984da72ae73bbdb3960dba7b64e90c",
+    "git_tag": null,
+    "git_dirty": false,
+    "python": "3.13.15",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "pandas": "3.0.5",
+    "scikit_learn": "1.9.0"
+  },
+  "started_utc": "2026-10-29T09:48:29+00:00"
+}

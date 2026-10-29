@@ -1,0 +1,26 @@
+{
+  "consumed_utc": "2026-10-29T10:32:38+00:00",
+  "commit": "e2dbb2ccaa984da72ae73bbdb3960dba7b64e90c",
+  "protocol_tag": "protocol-v2",
+  "protocol_tag_commit": "a55900ed2dffcb19ae8189cadad50ef48a2dc846",
+  "code_descends_from_tag": true,
+  "output_sha256": {
+    "balanced\\h1_cum3m_vs_cum1m.json": "1a8940c4424085c2341b41e0cbdfed226f95d9d075869dedb58f8ca22b7384d4",
+    "balanced\\models.csv": "bf91674ab35e769de2a66888e16d82193ab5c002b085b014e496f73349246572",
+    "balanced\\monthly_f1_wide.csv": "1495083e709fa2aa7084845507c8fbb72f7eb1aebda3e87ab8ea5a4027316dfd",
+    "balanced\\monthly_f1_wide_excl_overlap.csv": "92e4174ec29490c7ad934f3c002cc6edb0cbd997f48a7c0762353119f8535ac2",
+    "balanced\\monthly_metrics.csv": "4e4004396aee189b0c9b8bc9592a69aa353ef6d58a8aa85a44a8c05d451ba5b4",
+    "balanced\\paired_comparisons.csv": "3ec810d16f7764f964be2baeb88d31acb585eff34e8a2b2297ac51ce1ab92c14",
+    "balanced\\paired_comparisons_excl_overlap.csv": "b389d0ba84f04ccc2ea84e367c7f6add97b9b49c1b6986cb99e97b7ba3c995f2",
+    "balanced\\summary.csv": "c34ab8baae84facc6d2ba7dbdc5aba8040c16d2ea3f0e3aa21f73b3765af44e2",
+    "primary\\h1_cum3m_vs_cum1m.json": "b5f5648c7f2557dea62f64cb12ee6a673cdb7373fdfec0f2f613b60b60bcccf8",
+    "primary\\models.csv": "b158992be5534de4c98ee7e6810484f519fc4de90e9883f0a2fdf9dea30b6e4b",
+    "primary\\monthly_f1_wide.csv": "d06a26f9ff89b3b58f95df7545f9cb827ff95b9d261b45771979f373758d4b57",
+    "primary\\monthly_f1_wide_excl_overlap.csv": "e98d307128eb783fa6d584c1d44e0aebbdd9969ed02c551a34d059237290d3ac",
+    "primary\\monthly_metrics.csv": "fa8dce0188e84c434dd501be02215f32474e88217bdfc95c4247577e68815767",
+    "primary\\paired_comparisons.csv": "bf722001717945d24507202275ea0ae2872a30d981e3ceea964d094ca58ae864",
+    "primary\\paired_comparisons_excl_overlap.csv": "2ef4164340560cbe402703721a78586872f25a04fe709bb282c5fa694a114618",
+    "primary\\summary.csv": "8a33431d625b7fd76a22463887cf5fec4a2b433118ae73a710645b9914b2bfd7",
+    "run_config.json": "716a2639e160577d8c6f725c76f56d631f7a87c4a61850c53dc124fbf988cc87"
+  }
+}
